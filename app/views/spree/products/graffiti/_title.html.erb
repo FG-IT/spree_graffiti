@@ -1,0 +1,9 @@
+<div class="author">
+  <% brand = @presenter.try(:fetch, :brand) %>
+  <% unless brand.nil? %>
+    <a href="/products?keywords=<%= brand %>"><%= brand %></a>
+  <% end %>
+</div>
+<h1 class="mt-3 mt-md-0 text-md-left product-details-title">
+  <%= @presenter[:name] %>
+</h1>

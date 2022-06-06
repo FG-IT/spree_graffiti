@@ -1,0 +1,16 @@
+<% unless feature_list.nil? %>
+  <% content = feature_list.delete_prefix("'''").delete_suffix("'''")
+     if content.include? '#||#'
+       content = content.split('#||#').map { |s| content_tag(:li, s) }.join
+       content = content_tag(:ul, raw(content))
+     else
+       content = content.split("\n").map { |s| content_tag(:li, s) }.join
+       content = content_tag(:ul, raw(content))
+     end
+  %>
+  <div class="feature-list">
+  <%= raw content %>
+  </div>
+<% else %>
+  <%= sanitize @presenter[:description].truncate(450) %>
+<% end %>

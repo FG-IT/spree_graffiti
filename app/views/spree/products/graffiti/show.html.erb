@@ -1,0 +1,60 @@
+<% @body_id = 'product-details' %>
+<% cache cache_key_for_product do %>
+  <div class="container-fluid body-spree-fluid">
+    <%= render partial: 'spree/products/graffiti/breadcrumbs', locals: {taxons: @taxons} %>
+  </div>
+  <div class="container-fluid body-spree-fluid pt-4 product-details">
+    <div class="row" data-hook="product_show">
+      <div class="col-12 col-md-6 col-lg-6 col-xl-7 mt-4" data-hook="product_left_part">
+        <div class="d-md-none mb-3 ">
+          <%= render 'spree/products/graffiti/title' %>
+        </div>
+        <%= render partial: 'spree/products/graffiti/gallery', locals: {images: @presenter[:images]} %>
+      </div>
+      <div class="col-12 col-md-6 col-lg-6 col-xl-5 mt-4 product-info">
+        <div class="d-none d-md-block">
+          <%= render 'spree/products/graffiti/title' %>
+        </div>
+        <div id="product-description">
+          <% if @presenter[:available] %>
+            <div id="cart-form" data-hook="cart_form" class="mt-3">
+              <%= render 'spree/products/graffiti/cart_form', variant_change_identifier: 'productCarousel' %>
+            </div>
+          <% end %>
+          <div class="mt-4">
+            <%= render partial: 'spree/products/graffiti/feature_list', locals: {feature_list: @presenter[:properties].find {|prop| prop[:name] == 'feature_list' }} %>
+          </div>
+          <div class="mt-4">
+            <%= render partial: 'spree/products/graffiti/properties', locals: {properties: @presenter[:properties], dft_variant: @product.default_variant_resp} %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 col-12">
+      <%= render partial: 'tabs' %>
+    </div>
+    <div class="mt-4 col-12 d-xl-none">
+      <%= render partial: 'spree/products/graffiti/hero_content' %>
+    </div>
+  </div>
+  <div class="container-fluid body-spree-fluid pt-4">
+    <div id="no-product-available" class="no-product-available-dropdown">
+      <%= render partial: 'spree/shared/no_product_available' %>
+    </div>
+
+    <%= render partial: 'spree/products/graffiti/gallery_modal', locals: {images: @presenter[:images]} %>
+    <div id="related-products"/>
+    <%= render partial: 'spree/products/graffiti/structured_data' %>
+
+    <%= render 'spree/products/graffiti/product_added_modal' %>
+
+  </div>
+
+<% end %>
+
+<div
+  data-related-products
+  data-related-products-id="<%= @product.slug %>"
+  data-related-products-enabled=true
+  data-related-products-per-page=12
+  />

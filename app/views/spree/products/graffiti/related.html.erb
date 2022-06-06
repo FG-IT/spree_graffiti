@@ -1,0 +1,36 @@
+<div class="product-details-related container-fluid">
+  <h4 class="font-weight-bold mt-3"><%= Spree.t('pdp.you_may_also_like') %></h4>
+  <% @related_products.each_slice(6).with_index do |sliced_items, index| %>
+  <div class="container-fluid body-spree-fluid">
+    <div class="row mt-3">
+      <% sliced_items.each do |product| %>
+      <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+        <%= link_to product[:url], class: 'h-100 d-flex flex-column justify-content-between' do %>
+          <div class="d-flex h-100 align-items-center">
+            <% image = product[:images].first %>
+            <% unless image.blank? %>
+            <% img = list_image(image[:resize_url]) %>
+            <%= lazy_image_fixed(
+              src: img[:url],
+              class: 'd-block w-100',
+              alt: image[:alt] || product[:name],
+              width: img[:width],
+              height: img[:height]
+            ) %>
+            <% end %>
+            </div>
+          <div>
+            <% if product[:price] > 0 %>
+              <div class="product-component-price"><%= product[:display_price] %></div>
+            <% end %>
+            <div class="product-component-name" title="<%= product[:name] %>">
+              <%= truncate(product[:name], :length => 100) %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
+</div>

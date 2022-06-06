@@ -1,0 +1,26 @@
+<% position = 0 %>
+<nav id="breadcrumbs" class="col-12 mt-1 mt-sm-3 mt-lg-4" aria-label="Breadcrumbs">
+  <ol class="breadcrumb" itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumb-item" itemscope="itemscope" itemtype="https://schema.org/ListItem" itemprop="itemListElement">
+      <a href="<%= spree.root_path %>" itemprop="url">
+        <span itemprop="name"><%= Spree.t(:home) %></span>
+        <meta itemprop="position" content="0"></meta>
+      </a>
+    </li>
+    <% taxons.each do |taxon| %>
+    <li class="breadcrumb-item" itemscope="itemscope" itemtype="https://schema.org/ListItem" itemprop="itemListElement">
+      <a href="<%= taxon[:url] %>" itemprop="url">
+        <span itemprop="name"><%= taxon[:name] %></span>
+        <meta itemprop="position" content="<%= position += 1 %>"></meta>
+      </a>
+    </li>
+    <% end %>
+    <li class="breadcrumb-item" itemscope="itemscope" itemtype="https://schema.org/ListItem" itemprop="itemListElement">
+      <span href="<%= @presenter[:url] %>" itemprop="url">
+        <span itemprop="name"><%= @presenter[:name] %></span>
+        <meta itemprop="position" content="<%= position += 1 %>"></meta>
+      </span>
+      <span itemprop="item" itemscope="itemscope" itemtype="https://schema.org/Thing" itemid="<%= @presenter[:url] %>"></span>
+    </li>
+  </ol>
+</nav>

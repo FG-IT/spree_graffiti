@@ -1,0 +1,78 @@
+<% unless properties.blank? %>
+<%
+  weight = dft_variant[:weight].blank? ? 0 : dft_variant[:weight].to_f
+  depth = dft_variant[:depth].blank? ? 0 : dft_variant[:depth].to_f
+%>
+  <div class="table-responsive-sm d-none d-md-block product-properies">
+    <table class="table bolderless">
+      <% properties.each do |product_property| %>
+        <% name = product_property[:name] %>
+        <% unless name == 'feature_list' or name == 'product_group' or name == 'is_prime' %>
+          <% unless product_property[:value].to_s.strip.empty? or product_property[:value].to_s.strip.eql? '0 x 0 x 0 inches' %>
+            <tr>
+              <td width="180"><span class="font-weight-bold"><%= product_property[:presentation] %>:</span></td>
+              <td><span class="text-break"><%= product_property[:value] %></span></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if depth > 0 %>
+        <tr>
+          <td width="180"><span class="font-weight-bold">Product Dimensions:</span></td>
+          <td><span class="text-break"><%= depth %> x <%= dft_variant[:width] %> x <%= dft_variant[:height] %>
+            inches</span></td>
+        </tr>
+      <% end %>
+      <% if weight > 0 %>
+        <tr>
+          <td width="180"><span class="font-weight-bold">Item Weight:</span></td>
+          <td>
+            <span class="text-break">
+              <% if weight > 5 %>
+              <%= weight %>  pounds
+              <% else %>
+              <%= weight * 16 %>  ounces
+              <% end %>
+            </span>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="table-responsive-sm d-md-none product-properies">
+    <table class="table">
+      <% properties.each do |product_property| %>
+        <% name = product_property[:name] %>
+        <% unless name == 'feature_list' or name == 'product_group' or name == 'is_prime' %>
+          <% unless product_property[:value].to_s.strip.empty? or product_property[:value].to_s.strip.eql? '0 x 0 x 0 inches' %>
+            <tr>
+              <th><span class="font-weight-bold"><%= product_property[:presentation] %>:</span></th>
+              <td><span class="text-break"><%= product_property[:value] %></span></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if depth > 0 %>
+        <tr>
+          <th><span class="font-weight-bold">Product Dimensions:</span></th>
+          <td><span class="text-break"><%= dft_variant[:depth] %> x <%= dft_variant[:width] %> x <%= dft_variant[:height] %>
+            inches</span></td>
+        </tr>
+      <% end %>
+      <% if weight > 0 %>
+        <tr>
+          <th><span class="font-weight-bold">Item Weight:</span></th>
+          <td>
+            <span class="text-break">
+              <% if weight > 5 %>
+              <%= weight %>  pounds
+              <% else %>
+              <%= weight * 16 %>  ounces
+              <% end %>
+            </span>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>

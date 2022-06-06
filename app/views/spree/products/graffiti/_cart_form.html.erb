@@ -1,0 +1,105 @@
+<template class="availability-template availability-template-not-available-in-currency">
+  <%= render 'spree/products/graffiti/cart_form_availability_templates', type: 'not-available-in-currency' %>
+</template>
+
+<template class="availability-template availability-template-in-stock">
+  <%= render 'spree/products/graffiti/cart_form_availability_templates', type: 'in-stock' %>
+</template>
+
+<template class="availability-template availability-template-backorderable">
+  <%= render 'spree/products/graffiti/cart_form_availability_templates', type: 'backorderable' %>
+</template>
+
+<template class="availability-template availability-template-out-of-stock">
+  <%= render 'spree/products/graffiti/cart_form_availability_templates', type: 'out-of-stock' %>
+</template>
+
+<% is_product_available_in_currency = @presenter[:available] %>
+<%= form_for :order, html: {
+    id: 'add-to-cart-form',
+    class: 'add-to-cart-form',
+    'data-product-summary': product_summary(@product).to_json,
+    'data-variants': product_variants(@product).to_json,
+    'data-variant-change-trigger-identifier': variant_change_identifier
+} do |f| %>
+  <div id="inside-product-cart-form" data-hook="inside_product_cart_form">
+    <% if is_product_available_in_currency %>
+      <div id="product-price" class="mb-2 text-md-left add-to-cart-form-price" data-hook="product_price">
+        <span class="price selling" content="<%= @product_price.to_d %>">
+          <%= render 'spree/products/graffiti/product_price' %>
+
+          <span class="text-success free-text">& FREE delivery</span>
+          <span content="<%= @presenter[:currency] %>"></span>
+          </span>
+      </div>
+    <% end %>
+
+    <% unless @presenter[:has_only_default_variant] %>
+      <hr>
+      <ul id="product-variants" class="product-variants">
+        <% @presenter[:options].each_with_index do |option_type, index| %>
+          <%= render "spree/products/graffiti/option_type", option_type: option_type, index: index %>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <script>
+        var delivery_days = 10
+    </script>
+    <% if @presenter[:in_stock] && @presenter[:purchasable] %>
+      <% variant_id = @presenter[:has_only_default_variant] ? @presenter[:master_id] : @presenter[:variants].find {|v| !v[:is_master] } %>
+      <% is_prime_p = @presenter[:properties].find {|p| p[:name] == 'is_prime' } %>
+      <% is_prime = is_prime_p.blank? ? 'No' : is_prime_p[:value] %>
+      <%= hidden_field_tag "variant_id", variant_id %>
+      <div class="delivery mt-3">
+        <% if is_prime == 'Yes' %>
+          <script>
+               delivery_days = 4
+          </script>
+          <div class="delivery-window mt-2 delivery-fast-shipping">
+            <i class="fas fa-shipping-fast"></i> Free Expedited Shipping<br/>
+            Arrives by <span class='express-to'></span> <br>
+          </div>
+        <% else %>
+          <script>
+               delivery_days = 8
+          </script>
+          <div class="delivery-window mt-2">
+            Arrives: <strong><span class='from'></span> - <span class='to'></span></strong> <br>
+          </div>
+        <% end %>
+        <p class="mt-3  d-none d-xl-block"><a href="/pages/returns-refunds" target="_blank">Free 30 days returns. </a></p>
+      </div>
+
+      <div class="text-md-left add-to-cart-form-general-availability mt-3">
+        <%
+          if !is_product_available_in_currency
+            type = 'not-available-in-currency'
+          elsif @presenter[:in_stock]
+            type = 'in-stock'
+          elsif @presenter[:backorderable]
+            type = 'backorderable'
+          else
+            type = 'out-of-stock'
+          end
+        %>
+        <%= render 'spree/products/graffiti/cart_form_availability_templates', type: type %>
+      </div>
+
+      <div id="quantity_select_and_add_to_cart" class="d-flex flex-nowrap mb-3 mt-4">
+        <div class="flex-grow-0 mr-2">
+          <%= render 'spree/shared/quantity_select', input_name: :quantity %>
+        </div>
+        <%= button_tag class: 'btn w-100 add-to-cart-button flex-grow-1', id: 'add-to-cart-button', type: :submit do %>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="line-height: 14px;     margin-right: 5px;     margin-top: -2px;     display: inline-block;     vertical-align: sub;     -webkit-backface-visibility: hidden;     -moz-backface-visibility: hidden;     -ms-backface-visibility: hidden;     backface-visibility: hidden;     -webkit-perspective: 1000;     -moz-perspective: 1000;     -ms-perspective: 1000;     perspective: 1000;     -webkit-transform: translate3d(0, 0, 0);     -ms-transform: translate3d(0, 0, 0);     -o-transform: translate3d(0, 0, 0);     transform: translate3d(0, 0, 0);     -webkit-transition: all 0.2s ease-in-out;     -moz-transition: all 0.2s ease-in-out;     transition: all 0.2s ease-in-out;     fill: #ffffff;">
+            <path d="M20 20H0V6H20V20ZM2 18H18V8H2V18Z"></path>
+            <path d="M14 3.99995H12C12 3.49995 11.8 2.99995 11.4 2.59995C10.7 1.89995 9.3 1.89995 8.6 2.59995C8.2 2.89995 8 3.39995 8 3.99995H6C6 2.89995 6.4 1.89995 7.2 1.19995C8.7 -0.300049 11.3 -0.300049 12.9 1.19995C13.6 1.89995 14 2.89995 14 3.99995Z"></path>
+          </svg>
+          <%= Spree.t(:add_to_cart) %>
+          <i class="fas fa-caret-right"></i>
+        <% end %>
+
+      </div>
+    <% end %>
+  </div>
+<% end %>

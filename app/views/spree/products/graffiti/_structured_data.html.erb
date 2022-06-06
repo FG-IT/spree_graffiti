@@ -1,0 +1,27 @@
+<script type="application/ld+json">
+<%
+url = "#{spree.root_url}#{@presenter[:url]}"
+image = @presenter[:images].first
+image_url = image.nil? ? '' : zoom_image(image[:resize_url])[:url]
+%>
+<%==
+[{
+  '@context': 'https://schema.org/',
+  '@type': 'Product',
+  '@id': "#{spree.root_url}product_#{@presenter[:id]}",
+  url: url,
+  name: @presenter[:name],
+  image: image_url,
+  description: @presenter[:description],
+  sku: @presenter[:sku],
+  offers: {
+    '@type': 'Offer',
+    price: @presenter[:price],
+    priceCurrency: @presenter[:currency],
+    availability: @presenter[:in_stock] ? 'InStock' : 'OutOfStock',
+    url: url,
+    availabilityEnds: ''
+  }
+}].to_json
+%>
+</script>

@@ -1,0 +1,11 @@
+<% should_display_compare_at_price = !@presenter[:compare_at_price].blank? && @presenter[:compare_at_price] > @presenter[:price] %>
+<% if should_display_compare_at_price %>
+  <div class="price__sale">
+    <span class="price-item price-item--sale"><%= @presenter[:display_price] %></span>
+    <span class="price-item price-item--regular"><%= @presenter[:display_compare_at_price] %></span>
+  </div>
+<% else %>
+  <div class="price__regular">
+    <span><%= @presenter[:display_price] %></span>
+  </div>
+<% end %>

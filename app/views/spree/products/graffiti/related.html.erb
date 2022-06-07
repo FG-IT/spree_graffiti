@@ -20,7 +20,8 @@
             <% end %>
             </div>
           <div>
-            <% if product[:price] > 0 %>
+            <% price = product[:price].to_f.round(2) %>
+            <% if price > 0 %>
               <div class="product-component-price"><%= product[:display_price] %></div>
             <% end %>
             <div class="product-component-name" title="<%= product[:name] %>">

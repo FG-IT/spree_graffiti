@@ -49,7 +49,7 @@ module SpreeGraffiti
           in_stock: presenter[:in_stock],
           created_at: presenter[:created_at],
           updated_at: presenter[:updated_at],
-          price: presenter[:price],
+          price: presenter[:price].blank? ? 0 : presenter[:price].to_f.round(2),
           currency: presenter[:currency],
           conversions: presenter[:conversions],
           taxon_ids: taxons.values.map {|t| t[:id] },

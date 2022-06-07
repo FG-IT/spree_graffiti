@@ -22,7 +22,8 @@
             </div>
           <% end %>
           <div class="mt-4">
-            <%= render partial: 'spree/products/graffiti/feature_list', locals: {feature_list: @presenter[:properties].find {|prop| prop[:name] == 'feature_list' }} %>
+            <% feature_list_p = @presenter[:properties].find {|prop| prop[:name] == 'feature_list' } %>
+            <%= render partial: 'spree/products/graffiti/feature_list', locals: {feature_list: feature_list_p.blank? ? nil : feature_list_p[:value]} %>
           </div>
           <div class="mt-4">
             <%= render partial: 'spree/products/graffiti/properties', locals: {properties: @presenter[:properties], dft_variant: @product.default_variant_resp} %>

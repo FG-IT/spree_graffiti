@@ -3,3 +3,7 @@
 
 en:
   hello: "Hello world"
+  spree_graffiti:
+    config_name: 'Graffiti Settings'
+    enabled: 'Enabled'
+    image_resize_endpoint: 'Image Resize Endpoint'

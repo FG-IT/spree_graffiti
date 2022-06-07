@@ -4,7 +4,13 @@ module Graffiti
       @image_resize_endpoint = nil
 
       def image_resize_endpoint
-        @image_resize_endpoint ||= SpreeGraffiti::Config['image_resize_endpoint']
+        if ENV['IMAGE_RESIZE_ENDPOINT'].present?
+          @image_resize_endpoint ||= ENV['IMAGE_RESIZE_ENDPOINT']
+        elsif ENV['IMAGE_RESIZING_URL'].present?
+          @image_resize_endpoint ||= ENV['IMAGE_RESIZING_URL']
+        else
+          @image_resize_endpoint ||= SpreeGraffiti::Config['image_resize_endpoint']
+        end
       end
 
       def image_resize_url(url, width: nil, height: nil, format: 'jpg')

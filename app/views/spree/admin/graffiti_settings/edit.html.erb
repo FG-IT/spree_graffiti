@@ -1,0 +1,27 @@
+<% content_for :page_title do %>
+  <%= t('spree_graffiti.config_name') %>
+<% end %>
+
+<%= form_tag admin_graffiti_settings_path, method: :put do %>
+  <div id="preferences" data-hook>
+
+    <fieldset class="general no-border-top">
+
+      <div class='row'>
+        <div class='field col-md-6'>
+          <%= label_tag(t('spree_graffiti.image_resize_endpoint')) %>
+          <%= preference_field_tag('image_resize_endpoint', SpreeGraffiti::Config['image_resize_endpoint'], type: :string) %>
+        </div>
+      </div>
+
+      <div class="form-actions" data-hook="buttons">
+        <%= button Spree.t('actions.update'), 'save' %>
+        <span class="or"><%= Spree.t(:or) %></span>
+        <%= button_link_to Spree.t('actions.cancel'), edit_admin_graffiti_settings_url, icon: 'delete' %>
+      </div>
+
+    </fieldset>
+
+  </div>
+
+<% end %>

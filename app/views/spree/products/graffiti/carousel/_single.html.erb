@@ -18,7 +18,8 @@
         data-variant-id="<%= image[:viewable_id] %>"
       >
         <div class="product-carousel-item-squared <%= 'product-carousel-item-squared-only' if images.length == 1 %>">
-          <% img = zoomed ? zoom_image(image[:resize_url]) : large_image(image[:resize_url]) %>
+          <% image_base_url = image_resize_enabled? ? image[:resize_url] : image[:representation_url] %>
+          <% img = zoomed ? zoom_image(image_base_url) : large_image(image_base_url) %>
           <% image_attrs = {
             src: img[:url],
             alt: image[:alt] || dft_alt,
@@ -26,7 +27,7 @@
             width: img[:width],
             height: img[:height]
           } %>
-          <%= imageIndex.zero? ? image_tag(image_attrs.delete(:src), image_attrs) : lazy_image_fixed(image_attrs) %>
+          <%= imageIndex.zero? ? image_tag(image_attrs.delete(:src), image_attrs) : lazy_image(image_attrs) %>
         </div>
       </div>
     <% end %>
@@ -39,13 +40,13 @@
           data-slide-to="<%= imageIndex %>"
           class="product-carousel-indicators-indicator product-carousel-indicators-indicator--visible<%= ' active' if imageIndex == 0 %>"
         >
-          <% img = small_image(image[:resize_url]) %>
-          <%= lazy_image_fixed(
+          <% img = list_image(image_resize_enabled? ? image[:resize_url] : image[:representation_url]) %>
+          <%= lazy_image(
             src: img[:url],
             class: 'd-block w-100',
             alt: image[:alt] || dft_alt,
-            width: img[:width],
-            height: img[:height]
+            width: 57,
+            height: 70
           ) %>
         </li>
       <% end %>

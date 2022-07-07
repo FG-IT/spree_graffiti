@@ -1,16 +1,16 @@
 module SpreeGraffiti
   module ImageDecorator
     module ClassMethods
-      def styles
-        {
-            mini: '48x48>',
-            small: '100x100>',
-            product: '270x270>',
-            list: '270x270>',
-            large: '650x650>',
-            zoom: '1044x1044>'
-        }
-      end
+      # def styles
+      #   {
+      #       mini: '48x48>',
+      #       small: '100x100>',
+      #       product: '270x270>',
+      #       list: '270x270>',
+      #       large: '650x650>',
+      #       zoom: '1044x1044>'
+      #   }
+      # end
 
       def dimensions
         sizes = {}
@@ -33,7 +33,7 @@ module SpreeGraffiti
         if size.is_a?(Array) && size.size == 2
           return size
         else
-          raise 'size is not in right format'
+          raise "size #{size} is not in right format"
         end
       end
     end

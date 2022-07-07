@@ -9,8 +9,8 @@
           <div class="d-flex h-100 align-items-center">
             <% image = product[:images].first %>
             <% unless image.blank? %>
-            <% img = list_image(image[:resize_url]) %>
-            <%= lazy_image_fixed(
+            <% img = list_image(image_resize_enabled? ? image[:resize_url] : image[:representation_url]) %>
+            <%= lazy_image(
               src: img[:url],
               class: 'd-block w-100',
               alt: image[:alt] || product[:name],

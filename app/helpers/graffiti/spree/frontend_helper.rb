@@ -13,6 +13,10 @@ module Graffiti
         end
       end
 
+      def image_resize_enabled?
+        !image_resize_endpoint.blank?
+      end
+
       def image_resize_url(url, width: nil, height: nil, format: 'jpg')
         if width.blank?
           "#{image_resize_endpoint}#{url}?format=#{format}"
@@ -26,19 +30,33 @@ module Graffiti
       def style_image(url, style:, format: 'jpg')
         size = ::Spree::Image.styles[style]
         width, height = ::Spree::Image.unify_size(size)
-        {
-          url: image_resize_url(url, width: width, height: height, format: format),
-          width: width,
-          height: height
-        }
+
+        if image_resize_enabled?
+          {
+            url: image_resize_url(url, width: width, height: height, format: format),
+            width: width,
+            height: height
+          }
+        else
+          {
+            url: ::Spree::Image.style_url(url, style, format: format),
+            width: width,
+            height: height
+          }
+        end
       end
 
       def small_image(url, format: 'jpg')
         style_image(url, style: :small, format: format)
       end
 
+      def thumbnail_image(url, format: 'jpg')
+        style_image(url, style: :pdp_thumbnail, format: format)
+      end
+
       def list_image(url, format: 'jpg')
-        style_image(url, style: :list, format: format)
+        # style_image(url, style: :list, format: format)
+        style_image(url, style: :product, format: format)
       end
 
       def large_image(url, format: 'jpg')
@@ -46,7 +64,8 @@ module Graffiti
       end
 
       def zoom_image(url, format: 'jpg')
-        style_image(url, style: :zoom, format: format)
+        # style_image(url, style: :zoom, format: format)
+        style_image(url, style: :zoomed, format: format)
       end
 
       def lazy_image_fixed(src:, alt:, width:, height:, srcset: '', **options)
@@ -69,7 +88,7 @@ module Graffiti
       def product_variants(product)
         product.presenter[:variants].map do |variant|
           images = variant[:images].map do |image|
-            img = list_image(image[:resize_url])
+            img = small_image(image_resize_enabled? ? image[:resize_url] : image[:representation_url])
             {alt: image[:alt], url_product: img[:url]}
           end
 

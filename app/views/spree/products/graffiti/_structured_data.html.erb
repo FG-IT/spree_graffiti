@@ -2,7 +2,7 @@
 <%
 url = "#{spree.root_url}#{@presenter[:url]}"
 image = @presenter[:images].first
-image_url = image.nil? ? '' : zoom_image(image[:resize_url])[:url]
+image_url = image.nil? ? '' : zoom_image(image_resize_enabled? ? image[:resize_url] : image[:representation_url])[:url]
 %>
 <%==
 [{

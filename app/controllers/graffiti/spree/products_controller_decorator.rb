@@ -1,6 +1,10 @@
 module Graffiti
   module Spree
     module ProductsControllerDecorator
+      def self.prepended(base)
+        base.helper Graffiti::Spree::FrontendHelper
+      end
+
       def show
         redirect_if_legacy_path
 
@@ -37,7 +41,7 @@ module Graffiti
           products = searcher.retrieve_products.reject do |x|
             @product.present? && x.id == @product.id
           end
-          @related_products = products.first(6).map {|product| product.presenter }
+          @related_products = products.first(18).map {|product| product.presenter }
         end
 
         if @related_products.any?

@@ -1,0 +1,21 @@
+<% if ga_enabled? && @product.present? %>
+<% ps = product_summary(@product) %>
+<% variant = @product.default_variant_resp %>
+<script type="text/javascript">
+window.addEventListener('turbolinks:load', function () {
+    gtag('event', 'view_item', {
+        'send_to': '<%= ga_tracker.analytics_id %>',
+        'value': <%= variant[:price] %>,
+        'currency': "<%= variant[:currency] %>",
+        'items': [{
+            'id': <%= variant[:id] %>,
+            'item_id': <%= variant[:id] %>,
+            'item_name': "<%= @product.name %>",
+            'price': <%= variant[:price] %>,
+            'quantity': 10,
+            'currency': "<%= variant[:currency] %>"
+        }]
+    });
+});
+</script>
+<% end %>

@@ -1,5 +1,4 @@
 <% @body_id = 'product-details' %>
-<% cache cache_key_for_product do %>
   <%= render partial: 'spree/shared/trackers/google_analytics/product_viewed.js' %>
 
   <div class="container-fluid body-spree-fluid">
@@ -46,15 +45,15 @@
     </div>
 
     <%= render partial: 'spree/products/graffiti/gallery_modal', locals: {images: @presenter[:images]} %>
-    <div id="related-products" />
 
     <%= render partial: 'spree/products/graffiti/structured_data' %>
 
     <%= render partial: 'spree/products/graffiti/product_added_modal' %>
 
+    <div id="related-products" />
+
   </div>
 
-<% end %>
 
 <div
   data-related-products
